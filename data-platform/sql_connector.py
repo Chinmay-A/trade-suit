@@ -9,4 +9,5 @@ SQLPASS=os.getenv('MYSQL_PASS')
 
 def connectSQL():
     connection=mysql.connect(username=SQLUSER,password=SQLPASS,host='localhost',database='cryptos')
+    print("connected to mysql with user: "+SQLUSER+"@localhost")
     return connection
