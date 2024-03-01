@@ -1,13 +1,6 @@
-import os
-import dotenv
 import mysql.connector as mysql
 
-dotenv.load_dotenv()
-
-SQLUSER=os.getenv('MYSQL_USER')
-SQLPASS=os.getenv('MYSQL_PASS')
-
-def connectSQL():
-    connection=mysql.connect(username=SQLUSER,password=SQLPASS,host='localhost',database='cryptos')
-    print("connected to mysql with user: "+SQLUSER+"@localhost")
+def connectSQL(username,password,db):
+    connection=mysql.connect(username=username,password=password,host='localhost',database=db)
+    print("connected to mysql with user: "+username+"@localhost")
     return connection
