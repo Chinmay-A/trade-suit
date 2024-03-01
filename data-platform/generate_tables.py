@@ -11,3 +11,8 @@ DB='securities'
 connection=connectSQL(SQLUSER,SQLPASS,DB)
 cursor=connection.cursor()
 
+def generate_table(security):
+    query="CREATE TABLE "+security+" "
+    query+="(date datetime,time datetime, open float, high float, low float, close float, volume float);"
+    print(query)
+    return query
