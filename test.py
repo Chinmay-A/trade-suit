@@ -1,6 +1,31 @@
 import os
 import dotenv
-import requests
+
+import upstox_client as upstox
+from upstox_client.rest import ApiException
+
+dotenv.load_dotenv()
+
+connection=upstox.LoginApi()
+
+code=''
+apikey=os.getenv('UPSTOX_KEY')
+apisecret=os.getenv('UPSTOX_SECRET')
+redirect_uri='https://127.0.0.1:5000/'
+grant_type='authorization_code'
+
+try:
+    # Get token API
+    api_response = connection.token(code='6UAD9K',api_version='3.0',client_id='6UAD9K', client_secret=apikey,
+                                      redirect_uri=redirect_uri, grant_type=grant_type)
+    print(api_response)
+except ApiException as e:
+    print(e)
+
+
+
+
+"""import requests
 
 dotenv.load_dotenv()
 
@@ -8,7 +33,7 @@ dotenv.load_dotenv()
 
 #print(os.getenv('UPSTOX_KEY'))
 
-"""url = "https://api.upstox.com/v2/login/authorization/token"
+url = "https://api.upstox.com/v2/login/authorization/token"
 
 payload={
     'code':'mgDZPL',
