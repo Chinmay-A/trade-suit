@@ -19,7 +19,7 @@ class upstox:
         self.apisecret=apisecret
         self.userid=upstoxid
         self.redirect_uri=redirecturi
-        self.authtoken=''
+        self.auth_token=''
         self.code=''
     
     def login(self):
@@ -38,6 +38,29 @@ class upstox:
         print("Please Visit: "+final_authorize_url)
 
         self.code=input("Enter the generated code: ")
+
+        token_url='https://api.upstox.com/v2/login/authorization/token'
+
+        headers = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept':'application/json'
+        }
+
+        body={
+            'code':self.code,
+            'client_id': self.apikey,
+            'client_secret':self.apisecret,
+            'redirect_uri': self.redirect_uri,
+            'grant_type': 'authorization_code'
+        }
+
+        auth_response=requests.post(token_url,headers=headers, data=body)
+
+        if auth_response.status_code==200:
+            self.auth_token=auth_response.json().get('access_token')
+            print(auth_response.json())
+        else:
+            print(auth_response.status_code)
 
 
 #trial=upstox(apikey=api_key,apisecret=api_secret,upstoxid=upstox_id,redirect_uri=redirecturi)
