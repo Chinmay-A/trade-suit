@@ -1,6 +1,6 @@
 import mysql.connector as mysql
 
-class sqlhelp:
+class SQL:
     
     def __init__(self,username,password,database):
         
@@ -17,25 +17,26 @@ class sqlhelp:
         query="CREATE TABLE "+security+" "
         query+="(date VARCHAR(255),time VARCHAR(255), open float, high float, low float, close float, volume float);"
         
+        #print(query)
         self.connection.cursor().execute(query)
     
-    def add_data(self,instrument_key,data,connection):
+    def add_data(self,instrument_key,data):
 
-        query='INSERT INTO '+instrument_key+' (date, time, open, low, high, close, volume) VALUES ('
+        query='INSERT INTO '+instrument_key+' (date, time, open, high, low, close, volume) VALUES ('
         
         for i in range(len(data)):
 
             if i!=len(data)-1:
-                query+= "'"+data[i]+"'"+','
+                query+= "'"+str(data[i])+"'"+','
             else:
-                query+="'"+data[i]+"'"
+                query+="'"+str(data[i])+"'"
         
         query+=');'
 
         #print(query)
 
-        connection.cursor().execute(query)
-        connection.commit()
+        self.connection.cursor().execute(query)
+        self.connection.commit()
 
 
     

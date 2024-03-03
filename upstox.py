@@ -91,18 +91,21 @@ class upstox:
         url+=end+'/'
         url+=start+'/'
 
+        #print(url)
+
         headers={
             'Accept':'application/json',
+            'Authorization':f'Bearer {self.auth_token}'
         }
 
         response=requests.get(url,headers=headers)
 
         if response.status_code==200:
             #print(response.json())
-            return response.json()
+            return response.json().get('data').get('candles')
         else:
             print(response.status_code)
-            #print(response.text)
+            print(response.text)
             return -1
 
 
