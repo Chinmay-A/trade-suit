@@ -61,8 +61,54 @@ class upstox:
             print(auth_response.json())
         else:
             print(auth_response.status_code)
+        
+    def ltp(self,instrument):
+
+        url='https://api.upstox.com/v2/market-quote/ltp'
+
+        headers={
+            'Accept':'application/json',
+            'Authorization':f'Bearer {self.auth_token}'
+        }
+
+        params={
+            'instrument_key': instrument
+        }
+
+        response=requests.get(url,params=params,headers=headers)
+
+        if response.status_code==200:
+            return response.json().get('data').get(instrument).get('last_price')
+        else:
+            print(response.status_code)
+            return -1
+    
+    def get_historical_data(self,instrument_key,interval,start,end):
+
+        url='https://api.upstox.com/v2/historical-candle/'
+        url+=instrument_key+'/'
+        url+=interval+'/'
+        url+=end+'/'
+        url+=start+'/'
+
+        headers={
+            'Accept':'application/json',
+        }
+
+        response=requests.get(url,headers=headers)
+
+        if response.status_code==200:
+            #print(response.json())
+            return response.json()
+        else:
+            print(response.status_code)
+            #print(response.text)
+            return -1
+
+
+
 
 
 #trial=upstox(apikey=api_key,apisecret=api_secret,upstoxid=upstox_id,redirect_uri=redirecturi)
 
-#trial.login()
+#trial.get_historical_data('NSE_EQ%7CINE848E01016','30minute','2023-11-13','2023-11-14')
