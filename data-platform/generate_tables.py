@@ -13,6 +13,8 @@ cursor=connection.cursor()
 
 def generate_table(security):
     query="CREATE TABLE "+security+" "
-    query+="(date datetime,time datetime, open float, high float, low float, close float, volume float);"
+    query+="(date VARCHAR(255),time VARCHAR(255), open float, high float, low float, close float, volume float);"
     print(query)
     return query
+
+cursor.execute(generate_table('test'))
