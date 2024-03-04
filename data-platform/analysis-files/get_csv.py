@@ -12,11 +12,13 @@ sql_pass=os.getenv('MYSQL_PASS')
 sql_database='securities'
 
 sql=SQL(sql_user,sql_pass,sql_database)
+connection=sql.get_connection()
+cursor=connection.cursor()
 
 import pandas as pd
 
-query="SELECT * from ongc"
-
-df=pd.DataFrame(sql.connection.cursor().execute(query))
+cursor.execute("select * from ongc;")
+res=cursor.fetchall()
+df=pd.DataFrame(res)
 
 df.to_csv('test_ongc.csv',index=False)

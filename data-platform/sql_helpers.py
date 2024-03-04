@@ -11,6 +11,9 @@ class SQL:
             print("connected to mysql with user: "+username+"@localhost")
         except:
             print("Authenticaion Error: Connection Failed")
+    
+    def get_connection(self):
+        return self.connection
 
     def add_table(self,security):
         
