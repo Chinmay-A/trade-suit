@@ -19,6 +19,9 @@ def ema(window, k, series):
 
 def bollinger_bands(window,series,devs):
 
+    if(window>len(series)):
+        raise Exception("Window is longer than the available data")
+    
     import statistics
 
     middle=sma(window,series)
