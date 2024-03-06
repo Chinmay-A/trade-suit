@@ -80,6 +80,13 @@ class SQL:
             data_for_day[security]=curr_df.reset_index().drop(columns='index')
         
         return data_for_day
+    
+    def get_securities(self):
+
+        self.cursor.execute("show tables;")
+        results=self.cursor.fetchall()
+        return [security[0] for security in results]
+
 
 
         

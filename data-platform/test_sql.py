@@ -13,7 +13,7 @@ sql_database='securities'
 sql=sql_helpers.SQL(sql_user,sql_pass,sql_database)
 
 
-results= sql.get_unique_days()
+results= sql.get_securities()
 
 print(results)
 #print(results)
