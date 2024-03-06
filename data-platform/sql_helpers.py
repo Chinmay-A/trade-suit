@@ -49,7 +49,7 @@ class SQL:
         
         self.cursor.execute("select distinct date from ongc;")
         results=self.cursor.fetchall()
-        return [day[0] for day in results]
+        return [day[0] for day in results][::-1]
     
     def get_data_for_day(self,day):
 

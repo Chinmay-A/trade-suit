@@ -13,8 +13,7 @@ sql_database='securities'
 sql=sql_helpers.SQL(sql_user,sql_pass,sql_database)
 
 
-results= sql.get_data_for_day('2024-03-01')
+results= sql.get_unique_days()
 
-print(type(results))
-print(results['suzlon'].head())
+print(results)
 #print(results)
