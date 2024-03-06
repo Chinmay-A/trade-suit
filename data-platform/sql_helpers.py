@@ -40,6 +40,16 @@ class SQL:
 
         self.connection.cursor().execute(query)
         self.connection.commit()
+    
+    def get_unique_days(self):
+
+        cursor=self.connection.cursor()
+        cursor.execute("select distinct date from ongc;")
+        results=cursor.fetchall()
+        return [day[0] for day in results]
+    
+    def get_data_for(self):
+        print("under construction")
 
 
     
