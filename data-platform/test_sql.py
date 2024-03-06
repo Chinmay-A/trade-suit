@@ -2,7 +2,6 @@ import os
 import dotenv
 import sys
 
-import mysql.connector as mysql
 import sql_helpers
 
 dotenv.load_dotenv()
@@ -14,7 +13,8 @@ sql_database='securities'
 sql=sql_helpers.SQL(sql_user,sql_pass,sql_database)
 
 
-results= sql.get_unique_days()
+results= sql.get_data_for_day('2024-03-01')
 
 print(type(results))
-print(results)
+print(results['suzlon'].head())
+#print(results)

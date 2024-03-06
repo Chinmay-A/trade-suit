@@ -9,6 +9,9 @@ class SQL:
         try:
             self.connection=mysql.connect(username=username,password=password,host='localhost',database=database)
             print("connected to mysql with user: "+username+"@localhost")
+            self.cursor=self.connection.cursor()
+            self.cursor.execute("show tables;")
+            self.securities=[security[0] for security in self.cursor.fetchall()]
         except:
             print("Authenticaion Error: Connection Failed")
     
@@ -43,13 +46,45 @@ class SQL:
     
     def get_unique_days(self):
 
-        cursor=self.connection.cursor()
-        cursor.execute("select distinct date from ongc;")
-        results=cursor.fetchall()
+        
+        self.cursor.execute("select distinct date from ongc;")
+        results=self.cursor.fetchall()
         return [day[0] for day in results]
     
-    def get_data_for(self):
-        print("under construction")
+    def get_data_for_day(self,day):
+
+        import pandas as pd
+
+        data_for_day={}
+
+        columns_mapping={
+            0:'date',
+            1:'time',
+            2:'open',
+            3:'high',
+            4:'low',
+            5:'close',
+            6:'volume'
+        }
+
+        for security in self.securities:
+
+            #print(f"select * from {security} where date='{day}'")
+            self.cursor.execute(f"select * from {security} where date='{day}'")
+            results=self.cursor.fetchall()
+
+            curr_df=pd.DataFrame(results)
+            curr_df.rename(columns=columns_mapping,inplace=True)
+
+            curr_df=curr_df.iloc[::-1]
+            data_for_day[security]=curr_df.reset_index().drop(columns='index')
+        
+        return data_for_day
+
+
+        
+        
+        
 
 
     
