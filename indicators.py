@@ -27,4 +27,4 @@ def bollinger_bands(window,series,devs):
     middle=sma(window,series)
     stdev=statistics.stdev(series[-window:])
     
-    return middle-devs*stdev,middle,middle+stdev
+    return middle-devs*stdev,middle,middle+devs*stdev
