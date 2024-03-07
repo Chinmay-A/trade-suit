@@ -18,16 +18,15 @@ class Backtest:
 
         for day in days:
 
-            print(f"testing for {day} ", end="")
-
-            current_trader=self.Trader(self.capital,securities,5,20)
+            print(f"running test for {day} |", end="")
+            
             current_data=self.sql.get_data_for_day(day)
-
-            current_position={}
-
             n_tickers=len(current_data['ongc'])
 
-            for i in range(0,n_tickers,1):
+            current_trader=self.Trader(self.capital,securities,1,20,n_tickers/6)
+            
+            
+            for i in range(0,n_tickers,6):
 
                 ltps={}
 
@@ -35,23 +34,25 @@ class Backtest:
 
                     ltps[security]=current_data[security]['close'][i]
                 
-                current_trader.backtest_trade(ltps,ltps,n_tickers)
+                current_trader.backtest_trade(ltps,ltps)
 
-            self.trades.append(current_trader.get_trades_for_day())
+            #self.trades.append(current_trader.get_trades_for_day())
             self.profits.append(current_trader.get_profits_for_day())
-            self.capital+=current_trader.get_profits_for_day()
-            print(f" Profits: {self.profits[-1]}")   
+            self.capital=self.capital+current_trader.get_profits_for_day()
+            print(f" Profits for {day}: {self.profits[-1]} | Charges incurred: {current_trader.get_charges_for_day()}")   
             self.net_worth.append(self.net_worth[-1]+self.profits[-1])
 
         import statistics
 
         print(f"Sharpe : {statistics.mean(self.profits)/statistics.stdev(self.profits)}")
-
-        print(self.trades)
+        print(f"Net Worth: {self.net_worth[-1]}")
+        
+        #print(self.trades)
         
         from matplotlib import pyplot as plt
 
         plt.plot(self.net_worth)
+        plt.show()
 
         return self.net_worth,self.profits,self.trades         
 
