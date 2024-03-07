@@ -74,12 +74,15 @@ class Trader:
         else:
             
             if(self.positions[security]['type']==1):
+                
+                self.capital= self.capital + exit_price*self.positions[security]['quantity']
                 self.charges=self.charges+0.0005*exit_price*self.positions[security]['quantity']
                 self.profits=self.profits+(exit_price-self.positions[security]['price'])*self.positions[security]['quantity']
                 
                 self.trades.append(f"SELL EXIT {self.positions[security]['quantity']} OF {security} AT {exit_price}")
                 print(f"SELL EXIT {self.positions[security]['quantity']} OF {security} AT {exit_price}")
             elif(self.positions[security]['type']==-1):
+                self.capital= self.capital + self.positions[security]['price']*self.positions[security]['quantity']+(self.positions[security]['price']-exit_price)*self.positions[security]['quantity']
                 self.charges=self.charges+0.0005*exit_price*self.positions[security]['quantity']
                 self.profits=self.profits+(self.positions[security]['price']-exit_price)*self.positions[security]['quantity']
 
