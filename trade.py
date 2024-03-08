@@ -130,8 +130,8 @@ class Trader:
                 
                 #rsi=indicators.rsi(self.ltps[security],10)
                 #for securities with no active positions
-                short_sma_1=indicators.ema(15,2,self.ltps[security])
-                short_sma_2=indicators.ema(15,2,self.ltps[security][:-15])
+                short_sma_1=indicators.ema(5,2,self.ltps[security])
+                short_sma_2=indicators.ema(5,2,self.ltps[security][:-5])
                 long_sma=indicators.sma(self.ltps[security],60)
 
                 #print(short_sma/long_sma)
