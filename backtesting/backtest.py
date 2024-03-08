@@ -23,10 +23,10 @@ class Backtest:
             current_data=self.sql.get_data_for_day(day)
             n_tickers=len(current_data['ongc'])
 
-            current_trader=self.Trader(self.capital,securities,1,20,n_tickers/6)
+            current_trader=self.Trader(self.capital,securities,1,20,n_tickers/5)
             
             
-            for i in range(0,n_tickers,6):
+            for i in range(0,n_tickers,5):
 
                 ltps={}
 

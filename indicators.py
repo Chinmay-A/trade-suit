@@ -28,3 +28,20 @@ def bollinger_bands(window,series,devs):
     stdev=statistics.stdev(series[-window:])
     
     return middle-devs*stdev,middle,middle+devs*stdev
+
+def rsi(ltps, window):
+
+    ltps_rel=ltps[-window:]
+    #print(ltps_rel)
+
+    dels=[(ltps_rel[i]-ltps_rel[i-1]) for i in range(len(ltps_rel)-1)]
+
+    pos=[i if i>=0 else 0 for i in dels]
+    #print(pos)
+    neg=[i if i<0 else 0 for i in dels]
+    #print(neg)
+
+    return 100-(100/(1+(sum(pos)*len(neg)/(len(pos)*abs(sum(neg))))))
+
+    
+    

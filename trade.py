@@ -131,11 +131,31 @@ class Trader:
 
             #during active trading hours
             for security in self.securities:
-
-                b,m,u=indicators.bollinger_bands(self.lookback,self.ltps[security],devs=2)
+                
+                #rsi=indicators.rsi(self.ltps[security],10)
                 #for securities with no active positions
                 if(self.positions[security]['quantity']==0):
                     
+                    """
+                    #if we do not have enough margin
+                    if(self.capital<=update[security]):
+                        continue 
+                    
+                    if(rsi<=20):
+                        
+                        desired_quantity=int(max(self.capital/len(self.securities),update[security])/update[security])
+                        self.take_position(security,update[security],desired_quantity,1)
+                    elif(rsi>=80):
+                        desired_quantity=int(max(self.capital/len(self.securities),update[security])/update[security])
+                        self.take_position(security,update[security],desired_quantity,-1)
+                    """
+                    
+                    
+                    m,b,u=indicators.bollinger_bands(20,self.ltps[security],1)
+                    
+                    """
+                    Bollinger Bands: CONCLUDED AS LOSS MAKING
+                    """
                     #if we do not have enough margin
                     if(self.capital<=update[security]):
                         continue 
@@ -152,7 +172,7 @@ class Trader:
                         #if the price is greater than bollinger bands- sell
                         desired_quantity=int(max(self.capital/len(self.securities),update[security])/update[security])
                         self.take_position(security,update[security],desired_quantity,-1)
-                
+                    
                 #for securities with active positions
                 else:
                     #print(self.positions)
