@@ -1,4 +1,4 @@
-def sma(window, series):
+def sma(series,window):
     
     if(window>len(series)):
         raise Exception("Window is longer than the available data")
@@ -11,10 +11,10 @@ def ema(window, k, series):
         raise Exception("Window is longer than the available data")
     
     if(window==len(series)):
-        return sma(window,series)
+        return sma(series,window)
     
 
-    x=ema(window,k,series[-1])
+    x=ema(window,k,series[:-1])
     return k*(series[-1]-x)+x
 
 def bollinger_bands(window,series,devs):
@@ -24,7 +24,7 @@ def bollinger_bands(window,series,devs):
     
     import statistics
 
-    middle=sma(window,series)
+    middle=sma(series,window)
     stdev=statistics.stdev(series[-window:])
     
     return middle-devs*stdev,middle,middle+devs*stdev

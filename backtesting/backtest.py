@@ -1,9 +1,11 @@
 class Backtest:
 
-    def __init__(self,Trader,sql,starting_capital):
+    def __init__(self,Trader,sql,starting_capital,frequency,max_lookback):
         self.Trader=Trader
         self.sql=sql
         self.capital=starting_capital
+        self.frequency=frequency
+        self.max_lookback=max_lookback
     
     def start_backtest(self):
 
@@ -23,10 +25,10 @@ class Backtest:
             current_data=self.sql.get_data_for_day(day)
             n_tickers=len(current_data['ongc'])
 
-            current_trader=self.Trader(self.capital,securities,1,20,n_tickers/5)
+            current_trader=self.Trader(self.capital,securities,self.max_lookback,n_tickers/self.frequency)
             
             
-            for i in range(0,n_tickers,5):
+            for i in range(0,n_tickers,self.frequency):
 
                 ltps={}
 

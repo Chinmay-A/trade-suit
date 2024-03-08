@@ -1,6 +1,6 @@
 class Trader:
 
-    def __init__(self,starting_capital,securities,frequency,max_lookback,close_time):
+    def __init__(self,starting_capital,securities,max_lookback,close_time):
         
         self.capital=starting_capital
         self.positions={}
@@ -9,12 +9,11 @@ class Trader:
         self.ltps={}
         self.vol={}
         self.charges=0
-        self.frequency=frequency
         self.timestamp=0
         self.profits=0
         self.lookback=max_lookback
-        self.takeprofit=0.02
-        self.stoploss=0.3
+        self.takeprofit=0.01
+        self.stoploss=0.07
         self.closetime=close_time
 
         for security in self.securities:
@@ -131,26 +130,37 @@ class Trader:
                 
                 #rsi=indicators.rsi(self.ltps[security],10)
                 #for securities with no active positions
+                short_sma_1=indicators.ema(15,2,self.ltps[security])
+                short_sma_2=indicators.ema(15,2,self.ltps[security][:-15])
+                long_sma=indicators.sma(self.ltps[security],60)
+
+                #print(short_sma/long_sma)
                 if(self.positions[security]['quantity']==0):
                     
-                  print("Update under progress")
+                    if(self.capital<update[security]):
+                        continue
+                    
+                    if(short_sma_1>1.008*short_sma_2):
+                        quantity=int(max(self.capital/len(self.securities),update[security])/update[security])
+                        self.take_position(security,update[security],quantity,1)
+                    elif(short_sma_1<0.992*short_sma_2):
+                        quantity=int(max(self.capital/len(self.securities),update[security])/update[security])
+                        self.take_position(security,update[security],quantity,-1)
                     
                 #for securities with active positions
                 else:
-                    #print(self.positions)
-                    #position=self.positions[security]
 
                     #if the active position is long
                     if(self.positions[security]['type']==1):
 
                         #check if the position has hit take profit or stoploss
-                        if((update[security]<=(1+self.takeprofit)*self.positions[security]['price']) or (update[security]<=(1-self.stoploss)*self.positions[security]['price'])):
+                        if(update[security]>(1+self.takeprofit)*self.positions[security]['price'] or (update[security]<=(1-self.stoploss)*self.positions[security]['price'])):
                             
                             self.exit_position(security,update[security])   
                     #if the active position is short
                     elif(self.positions[security]['type']==-1):
 
-                        if((update[security]<=(1-self.takeprofit)*self.positions[security]['price']) or (update[security]>=(1+self.stoploss)*self.positions[security]['price'])):
+                        if(update[security]<(1-self.takeprofit)*self.positions[security]['price'] or (update[security]>=(1+self.stoploss)*self.positions[security]['price'])):
                             self.exit_position(security,update[security])
         
         return None
