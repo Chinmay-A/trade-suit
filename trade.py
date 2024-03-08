@@ -133,42 +133,7 @@ class Trader:
                 #for securities with no active positions
                 if(self.positions[security]['quantity']==0):
                     
-                    """
-                    #if we do not have enough margin
-                    if(self.capital<=update[security]):
-                        continue 
-                    
-                    if(rsi<=20):
-                        
-                        desired_quantity=int(max(self.capital/len(self.securities),update[security])/update[security])
-                        self.take_position(security,update[security],desired_quantity,1)
-                    elif(rsi>=80):
-                        desired_quantity=int(max(self.capital/len(self.securities),update[security])/update[security])
-                        self.take_position(security,update[security],desired_quantity,-1)
-                    """
-                    
-                    
-                    m,b,u=indicators.bollinger_bands(20,self.ltps[security],1)
-                    
-                    """
-                    Bollinger Bands: CONCLUDED AS LOSS MAKING
-                    """
-                    #if we do not have enough margin
-                    if(self.capital<=update[security]):
-                        continue 
-
-                    #if the price is less than bollinger bands- buy
-                    if(update[security]<=b):
-                        #if the price is greater than bollinger bands- sell     
-                        desired_quantity=int(max(self.capital/len(self.securities),update[security])/update[security])
-                        
-                        self.take_position(security,update[security],desired_quantity,1)    
-                
-                    #if the price is more than bollinger bands- sell
-                    elif(update[security]>=u):
-                        #if the price is greater than bollinger bands- sell
-                        desired_quantity=int(max(self.capital/len(self.securities),update[security])/update[security])
-                        self.take_position(security,update[security],desired_quantity,-1)
+                  print("Update under progress")
                     
                 #for securities with active positions
                 else:
