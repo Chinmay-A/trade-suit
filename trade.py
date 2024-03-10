@@ -12,8 +12,8 @@ class Trader:
         self.timestamp=0
         self.profits=0
         self.lookback=max_lookback
-        self.takeprofit=0.01
-        self.stoploss=0.07
+        self.takeprofit=0.03
+        self.stoploss=0.01
         self.closetime=close_time
 
         for security in self.securities:
@@ -128,22 +128,22 @@ class Trader:
             #during active trading hours
             for security in self.securities:
                 
-                #rsi=indicators.rsi(self.ltps[security],10)
+                rsi=indicators.calculate_rsi(self.ltps[security][-10:],10)
                 #for securities with no active positions
-                short_sma_1=indicators.ema(5,2,self.ltps[security])
-                short_sma_2=indicators.ema(5,2,self.ltps[security][:-5])
-                long_sma=indicators.sma(self.ltps[security],60)
-
+                #short_sma_1=indicators.ema(5,2,self.ltps[security])
+                #short_sma_2=indicators.ema(5,2,self.ltps[security][:-5])
+                #long_sma=indicators.sma(self.ltps[security],60)
+                b,m,u=indicators.bollinger_bands(10,self.ltps[security],2.3)
                 #print(short_sma/long_sma)
                 if(self.positions[security]['quantity']==0):
                     
                     if(self.capital<update[security]):
                         continue
                     
-                    if(short_sma_1>1.008*short_sma_2):
+                    if(update[security]<b and rsi<10):
                         quantity=int(max(self.capital/len(self.securities),update[security])/update[security])
                         self.take_position(security,update[security],quantity,1)
-                    elif(short_sma_1<0.992*short_sma_2):
+                    elif(update[security]>u and rsi>90):
                         quantity=int(max(self.capital/len(self.securities),update[security])/update[security])
                         self.take_position(security,update[security],quantity,-1)
                     

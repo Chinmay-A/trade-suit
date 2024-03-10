@@ -9,7 +9,7 @@ import sql_connector
 import sql_helpers
 import upstox
 
-securities_of_interest=['IDBI','IDFCFIRSTB','SUZLON','ONGC','PNB']
+securities_of_interest=['UCOBANK','NHPC','IOB','IRB']
 
 sql_user=os.getenv('MYSQL_USER')
 sql_pass=os.getenv('MYSQL_PASS')
@@ -31,12 +31,12 @@ upstoxc=upstox.upstox(upstox_key,upstox_secret,upstox_id,redirect_uri)
 #upstoxc.login()
 
 instument_mapping={
-    'IDBI':'NSE_EQ|INE008A01015',
-    'IDFCFIRSTB':'NSE_EQ|INE092T01019',
-    'SUZLON':'NSE_EQ|INE040H01021',
-    'ONGC':'NSE_EQ|INE213A01029',
-    'PNB':'NSE_EQ|INE160A01022'
+    'UCOBANK':'NSE_EQ|INE691A01018',
+    'NHPC':'NSE_EQ|INE848E01016',
+    'IOB':'NSE_EQ|INE565A01014',
+    'IRB':'NSE_EQ|INE821I01022'
 }
+
 for instrument in securities_of_interest:
 
     current_security_data=upstoxc.get_historical_data(instument_mapping[instrument],'1minute','2023-10-01','2024-03-01')

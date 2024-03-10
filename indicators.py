@@ -43,5 +43,20 @@ def rsi(ltps, window):
 
     return 100-(100/(1+(sum(pos)*len(neg)/(len(pos)*abs(sum(neg))))))
 
+def calculate_rsi(close_prices, window):
+    delta = [close_prices[i] - close_prices[i - 1] for i in range(1, len(close_prices))]
+    gains = [delta[i] if delta[i] > 0 else 0 for i in range(len(delta))]
+    losses = [abs(delta[i]) if delta[i] < 0 else 0 for i in range(len(delta))]
+    
+    avg_gain = sum(gains[:window]) / window
+    avg_loss = sum(losses[:window]) / window
+    
+    if avg_loss == 0:
+        return 100
+    else:
+        rs = avg_gain / avg_loss
+        rsi = 100 - (100 / (1 + rs))
+        return rsi
+
     
     

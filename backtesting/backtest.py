@@ -23,7 +23,7 @@ class Backtest:
             print(f"running test for {day} |", end="")
             
             current_data=self.sql.get_data_for_day(day)
-            n_tickers=len(current_data['ongc'])
+            n_tickers=len(current_data[securities[0]])
 
             current_trader=self.Trader(self.capital,securities,self.max_lookback,n_tickers/self.frequency)
             

@@ -47,7 +47,8 @@ class SQL:
     def get_unique_days(self):
 
         
-        self.cursor.execute("select distinct date from ongc;")
+        securities=self.get_securities()
+        self.cursor.execute(f"select distinct date from {securities[0]};")
         results=self.cursor.fetchall()
         return [day[0] for day in results][::-1]
     
