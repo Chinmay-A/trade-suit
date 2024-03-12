@@ -17,6 +17,6 @@ database='securities'
 
 
 sql=sql_helpers.SQL(sqluser,sqlpass,database)
-backtest=Backtest(Trader,sql,5000,1,30,0.01,0.005)
+backtest=Backtest(Trader,sql,5000,10,15,0.01,0.005)
 
 backtest.start_backtest()
