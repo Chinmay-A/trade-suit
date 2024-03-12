@@ -58,5 +58,17 @@ def calculate_rsi(close_prices, window):
         rsi = 100 - (100 / (1 + rs))
         return rsi
 
+def vwap(close,vols,window):
+
+    numerator=0
+    sum_vol=0
+    n=len(close)
+
+    for i in range(window):
+        numerator+=close[n-i-1]*vols[n-i-1]
+        sum_vol+=vols[n-i-1]
+    
+    return numerator/sum_vol
+
     
     

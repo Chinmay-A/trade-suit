@@ -1,6 +1,6 @@
 class Trader:
 
-    def __init__(self,starting_capital,securities,max_lookback,close_time):
+    def __init__(self,starting_capital,securities,max_lookback,close_time,takeprofit,stoploss):
         
         self.capital=starting_capital
         self.positions={}
@@ -12,8 +12,8 @@ class Trader:
         self.timestamp=0
         self.profits=0
         self.lookback=max_lookback
-        self.takeprofit=0.03
-        self.stoploss=0.01
+        self.takeprofit=takeprofit
+        self.stoploss=stoploss
         self.closetime=close_time
 
         for security in self.securities:
@@ -128,24 +128,33 @@ class Trader:
             #during active trading hours
             for security in self.securities:
                 
-                rsi=indicators.calculate_rsi(self.ltps[security][-10:],10)
+                #rsi=indicators.calculate_rsi(self.ltps[security][-10:],10)
                 #for securities with no active positions
                 #short_sma_1=indicators.ema(5,2,self.ltps[security])
                 #short_sma_2=indicators.ema(5,2,self.ltps[security][:-5])
                 #long_sma=indicators.sma(self.ltps[security],60)
-                b,m,u=indicators.bollinger_bands(10,self.ltps[security],2.3)
-                #print(short_sma/long_sma)
+                #b,m,u=indicators.bollinger_bands(10,self.ltps[security],2.3)
+
+                vwap=indicators.vwap(self.ltps[security],self.vol[security], 30)
+
+                enter_trade=True
+
+                for i in range(6):
+                    if(self.ltps[security][-i-3]>vwap):
+                        enter_trade=False
+                        break
+                
                 if(self.positions[security]['quantity']==0):
                     
                     if(self.capital<update[security]):
                         continue
                     
-                    if(update[security]<b and rsi<10):
+                    if(enter_trade and update[security]>vwap and self.ltps[security][-2]>vwap):
                         quantity=int(max(self.capital/len(self.securities),update[security])/update[security])
                         self.take_position(security,update[security],quantity,1)
-                    elif(update[security]>u and rsi>90):
-                        quantity=int(max(self.capital/len(self.securities),update[security])/update[security])
-                        self.take_position(security,update[security],quantity,-1)
+                    # elif(update[security]>u and rsi>90):
+                    #     quantity=int(max(self.capital/len(self.securities),update[security])/update[security])
+                    #     self.take_position(security,update[security],quantity,-1)
                     
                 #for securities with active positions
                 else:

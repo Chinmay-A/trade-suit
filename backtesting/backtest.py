@@ -1,11 +1,13 @@
 class Backtest:
 
-    def __init__(self,Trader,sql,starting_capital,frequency,max_lookback):
+    def __init__(self,Trader,sql,starting_capital,frequency,max_lookback,takeprofit,stoploss):
         self.Trader=Trader
         self.sql=sql
         self.capital=starting_capital
         self.frequency=frequency
         self.max_lookback=max_lookback
+        self.takeprofit=takeprofit
+        self.stoploss=stoploss
     
     def start_backtest(self):
 
@@ -25,18 +27,20 @@ class Backtest:
             current_data=self.sql.get_data_for_day(day)
             n_tickers=len(current_data[securities[0]])
 
-            current_trader=self.Trader(self.capital,securities,self.max_lookback,n_tickers/self.frequency)
+            current_trader=self.Trader(self.capital,securities,self.max_lookback,n_tickers/self.frequency,self.takeprofit,self.stoploss)
             
             
             for i in range(0,n_tickers,self.frequency):
 
                 ltps={}
+                vols={}
 
                 for security in securities:
 
                     ltps[security]=current_data[security]['close'][i]
+                    vols[security]=current_data[security]['volume'][i]
                 
-                current_trader.backtest_trade(ltps,ltps)
+                current_trader.backtest_trade(ltps,vols)
 
             #self.trades.append(current_trader.get_trades_for_day())
             self.profits.append(current_trader.get_profits_for_day())
@@ -45,6 +49,8 @@ class Backtest:
             self.net_worth.append(self.net_worth[-1]+self.profits[-1])
 
         import statistics
+
+        sharpe=statistics.mean(self.profits)/statistics.stdev(self.profits)
 
         print(f"Sharpe : {statistics.mean(self.profits)/statistics.stdev(self.profits)}")
         print(f"Net Worth: {self.net_worth[-1]}")
@@ -56,7 +62,7 @@ class Backtest:
         plt.plot(self.net_worth)
         plt.show()
 
-        return self.net_worth,self.profits,self.trades         
+        return self.net_worth[-1],self.profits[-1],sharpe       
 
                     
                 
