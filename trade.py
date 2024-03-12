@@ -135,11 +135,11 @@ class Trader:
                 #long_sma=indicators.sma(self.ltps[security],60)
                 #b,m,u=indicators.bollinger_bands(10,self.ltps[security],2.3)
 
-                vwap=indicators.vwap(self.ltps[security],self.vol[security], 30)
+                vwap=indicators.vwap(self.ltps[security],self.vol[security], self.lookback)
 
                 enter_trade=True
 
-                for i in range(6):
+                for i in range(3):
                     if(self.ltps[security][-i-3]>vwap):
                         enter_trade=False
                         break

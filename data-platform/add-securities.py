@@ -9,7 +9,7 @@ import sql_connector
 import sql_helpers
 import upstox
 
-securities_of_interest=['UCOBANK','NHPC','IOB','IRB']
+securities_of_interest=['IDBI','ONGC','HINDZINC','VEDL','IRFC']
 
 sql_user=os.getenv('MYSQL_USER')
 sql_pass=os.getenv('MYSQL_PASS')
@@ -31,10 +31,14 @@ upstoxc=upstox.upstox(upstox_key,upstox_secret,upstox_id,redirect_uri)
 #upstoxc.login()
 
 instument_mapping={
-    'UCOBANK':'NSE_EQ|INE691A01018',
-    'NHPC':'NSE_EQ|INE848E01016',
-    'IOB':'NSE_EQ|INE565A01014',
-    'IRB':'NSE_EQ|INE821I01022'
+    'IDBI':'NSE_EQ|INE008A01015',
+    'ONGC':'NSE_EQ|INE213A01029',
+    'HINDZINC': 'NSE_EQ|INE267A01025',
+    'VEDL': 'NSE_EQ|INE205A01025',
+    'IRFC':'NSE_EQ|INE053F01010'
+
+
+
 }
 
 for instrument in securities_of_interest:
