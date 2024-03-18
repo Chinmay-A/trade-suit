@@ -23,7 +23,7 @@
 
 #Iteration C
 
-['HINDZINC', 'VEDL']
+['HINDZINC', 'VEDL','IRFC']
 
 {
     'HINDZINC': 'NSE_EQ|INE267A01025',
