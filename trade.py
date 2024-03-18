@@ -128,28 +128,18 @@ class Trader:
             #during active trading hours
             for security in self.securities:
                 
-                #rsi=indicators.calculate_rsi(self.ltps[security][-10:],10)
-                #for securities with no active positions
-                #short_sma_1=indicators.ema(5,2,self.ltps[security])
-                #short_sma_2=indicators.ema(5,2,self.ltps[security][:-5])
-                #long_sma=indicators.sma(self.ltps[security],60)
-                #b,m,u=indicators.bollinger_bands(10,self.ltps[security],2.3)
+                rsi=indicators.calculate_rsi(self.ltps[security][-10:],10)
+                
+                b,m,u=indicators.bollinger_bands(30,self.ltps[security],1.5)
 
-                vwap=indicators.vwap(self.ltps[security],self.vol[security], self.lookback)
-
-                enter_trade=True
-
-                for i in range(3):
-                    if(self.ltps[security][-i-3]>vwap):
-                        enter_trade=False
-                        break
+                #vwap=indicators.vwap(self.ltps[security],self.vol[security], self.lookback)
                 
                 if(self.positions[security]['quantity']==0):
                     
                     if(self.capital<update[security]):
                         continue
                     
-                    if(enter_trade and update[security]>vwap and self.ltps[security][-2]>vwap):
+                    if(update[security]>b and rsi<30):
                         quantity=int(max(self.capital/len(self.securities),update[security])/update[security])
                         self.take_position(security,update[security],quantity,1)
                     # elif(update[security]>u and rsi>90):
