@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Trade Suit</title>
+
+        <link rel="stylesheet" href="../styles/backtest_style.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    </head>
+
+
+    <body>
+        <h1><center>Trade Suit</center></h1>
+
+        <br><br>
+
+        <canvas id="main-chart" style="width:100%;max-width:700px"></canvas>
+        <script>
+            const xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+            const yValues = [55, 49, 44, 24, 15];
+            const barColors = ["red", "green","blue","orange","brown"];
+            
+            new Chart("main-chart", {
+              type: "line",
+              data: {
+                labels: xValues,
+                datasets: [{
+                  backgroundColor: barColors,
+                  data: yValues
+                }]
+              }
+            });
+        </script>
+
+        <div id="orders-table">
+        
+       <h3>Orders</h3>
+
+        <table>
+            
+            <tr>
+                <th>Company</th>
+                <th>Type</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+            <tr>
+                <td>IDBI</td>
+                <td>BUY</td>
+                <td>50</td>
+                <td>2</td>
+            </tr>
+        </table>
+    </div>
+
+
+
+        
+    </body>
+</html>

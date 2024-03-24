@@ -1,0 +1,14 @@
+.main-chart{
+    height: 35vh;
+    width: 35vh;
+}
+
+table, td, tr, th{
+    border: 1px solid black;
+}
+
+#orders-table{
+    float: right;
+    margin-top: -35vh;
+    margin-right: 5vh;
+}
